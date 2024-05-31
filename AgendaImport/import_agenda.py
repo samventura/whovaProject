@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 
 import xlrd
+import sys
 from db_table import db_table
 
 
@@ -54,14 +55,18 @@ if __name__ == "__main__":
     # Create table
     db = db_table("my_table", schema)
 
+    if len(sys.argv) != 2:
+        raise RuntimeError("No file name provided")
+    file_name = sys.argv[1]
+
     # Using xlrd to open the input file (and get the specific sheet)
-    book = xlrd.open_workbook("agenda.xls")
+    book = xlrd.open_workbook(file_name)
     sh = book.sheet_by_index(0)
 
     # Parse the excel file and populate db with it
     # process_excel(db, sh)
 
     # just to confirm retrieval works
-    # print(db.select())
+    print(db.select())
 
     db.close()
